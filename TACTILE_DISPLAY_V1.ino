@@ -1,7 +1,8 @@
+
 //#include <Arduino_FreeRTOS.h>
 //#include <semphr.h>
 
-#include <WEBER_TACTILE_DISPLAY.h>
+
 
 #include <Wire.h> //Include arduino Wire Library to enable to I2C
 #include "WEBER_TACTILE_DISPLAY.h"
@@ -20,22 +21,31 @@ void setup()
 
   //TD.PLAY_MARIO();
   delay(20);
-  TD.TEST_TCA0();
   //TD.i2cSCANNER();
   TD.TCA_SCANNER();
 }
 
 void loop() 
 {  
-Serial.println("hi");
+//Serial.println("hi");
  // delay(1000);    // Delay allows waveform to play, and gives the user time to recognize the display
  // TD.TEST_TCA0(); // Test TCA1 - Outputs waveform onto 6 ports (0-5)
  // delay(1000);    // Delay allows waveform to play, and gives the user time to recognize the display
 
 
+  // Check if data is available to read from the Serial Monitor
+  if (Serial.available()) {
+    // Read the data from the Serial Monitor
+    char receivedChar = Serial.read();
+    
+    // Print the received character back to the Serial Monitor
+    Serial.print("You sent: ");
+    Serial.println(receivedChar);
+    TD.PLAY_CHAR(receivedChar);
+  }
 
 //  delay(1000);        // First delay gives user extra time to recognize the display from last repeated (main) loop
-  TD.PLAY_A_proto(); // Play Braille Char. "A"- Outputs waveform onto designated Tactile Display ports
+  //TD.PLAY_A_proto(); // Play Braille Char. "A"- Outputs waveform onto designated Tactile Display ports
 
     //timestart = micros();
    // TD.LOAD_MAX36();
