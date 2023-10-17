@@ -67,7 +67,17 @@ void WEBER_TACTILE_DISPLAY::begin()
   delay(300);
 }
 
-
+/*void WEBER_TACTILE_DISPLAY::KeyboardTest()
+{
+  loop() {
+    if (Serial.available()) {
+      char receivedChar = Serial.read();
+      Serial.print("You sent: ");
+      Serial.println(receivedChar);
+    }
+  }
+}
+*/
 // ------------------------------- Yurikleb's wtd2665 Initialization Procedure ----------------------
 // Description: Takes piezo driver out of standby, and runs an initialization setup
 //  Note: Setting the GO bit has been disabled for our use. Therefore, it is ONLY loading Waveform (not playing)
@@ -576,38 +586,12 @@ void WEBER_TACTILE_DISPLAY::TEST_TCA1(void)
 void WEBER_TACTILE_DISPLAY::PLAY_A_proto(void)
 { 
   Serial.println(pos);
-  switch (pos) {
-    case 0:
-      //LOAD Waveform into TCA0 port 0
-      TCA_0(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Play Stored Waveform
-      Serial.println("where are we struggling");
-      TCA_0(0); 
-      writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
-      Serial.println("a0");
-      TCA_OFF(0);
-      break;
-    case 1:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Play Stored Waveform
-      TCA_2(0); 
-      writeRegisterBytes(0x02, 0x01);
-      Serial.println("a1");
-      TCA_OFF(2);
-      break;
-    case 2: 
-      TCA_4(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Play Stored Waveform
-      TCA_4(0); 
-      writeRegisterBytes(0x02, 0x01);
-      Serial.println("a2");
-      break;
-    default:
-      break;
-  }
+    //LOAD Waveform into TCA0 port 0
+    TCA_and_PORT(0,0);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,0); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_OFF(0);
 }
 
 // -------------- Play Mario Soundbit  ------------
@@ -708,7 +692,7 @@ void WEBER_TACTILE_DISPLAY::PLAY_SIDE2SIDE(void)
     writeRegisterBytes(0x02, 0x01);
 }
 
-void WEBER_TACTILE_DISPLAY::PLAY_CHAR(char c, int p) 
+void WEBER_TACTILE_DISPLAY::PLAY_CHAR(char c) 
 {
   switch (c) {
     case 'A':
@@ -1186,7 +1170,7 @@ void WEBER_TACTILE_DISPLAY::PLAY_WORD(char* word)
         if(sentences[j][i] > 0)
         {
           Serial.println("playing sentences");
-          PLAY_CHAR(sentences[j][i], 0);
+          PLAY_CHAR(sentences[j][i]);
         } else {
           break;
         }
@@ -1252,66 +1236,18 @@ void WEBER_TACTILE_DISPLAY::READ_WORD()
 }
 
 void WEBER_TACTILE_DISPLAY::PLAY_B_proto(void) {
-  ////LOAD Waveform into TCA0 port 0,1, and 2
     Serial.println(pos);
-    switch (pos) {
-    case 0:
-      TCA_1(2); 
-      Serial.println("where are we struggling");
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-//      TCA_5(5); 
-//      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_1(2); 
-      writeRegisterBytes(0x02, 0x01);
-//      TCA_5(5); 
-//      writeRegisterBytes(0x02, 0x01);
-      Serial.println("b done");
-//      break;
-
-//       LOAD Waveform into TCA0 port 0
-//      TCA_0(0); 
-//      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-//      //PLAY Play Stored Waveform
-//      Serial.println("where are we struggling");
-//      TCA_0(0); 
-//      writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
-//
-//      TCA_0(); 
-//      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-//      //PLAY Play Stored Waveform
-//      Serial.println("where are we struggling");
-//      TCA_0(1); 
-//      writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
-//      Serial.println("b0");
-      TCA_OFF(0);
-      break;
-    case 1:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_2(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_2(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_2(1); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 2:
-      TCA_4(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_4(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_4(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_4(1); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    default:
-      break;
+    //LOAD Waveform into TCA0 port 0
+    TCA_and_PORT(0,0);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,0); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_and_PORT(0,1);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,1); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_OFF(0);
     }
-}
 
 void WEBER_TACTILE_DISPLAY::PLAY_C_proto(void) {
   ////LOAD Waveform into TCA0 port 0,1, and 2
@@ -3110,7 +3046,7 @@ void WEBER_TACTILE_DISPLAY::PLAY_CAPF_proto(void) {
 }
 
 void WEBER_TACTILE_DISPLAY::POSITION(void){
-  if(pos < 2){
+  if(pos < 6){
     pos++;
   }
   else
