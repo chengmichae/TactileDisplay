@@ -1251,30 +1251,17 @@ void WEBER_TACTILE_DISPLAY::PLAY_B_proto(void) {
 
 void WEBER_TACTILE_DISPLAY::PLAY_C_proto(void) {
   ////LOAD Waveform into TCA0 port 0,1, and 2
-  switch (pos) {
-    case 0:
-      TCA_0(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_1(0); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 1:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_3(0); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 2:
-      TCA_4(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_5(0); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    default:
-      break;
+    Serial.println(pos);
+    //LOAD Waveform into TCA0 port 0
+    TCA_and_PORT(0,0);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,0); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_and_PORT(0,3);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,3); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_OFF(0);
   }
 }
 // -------------- PLAY&LOAD Braille Char. "D" ------------
@@ -1286,54 +1273,21 @@ void WEBER_TACTILE_DISPLAY::PLAY_C_proto(void) {
 
 void WEBER_TACTILE_DISPLAY::PLAY_D_proto(void) {
   ////LOAD Waveform into TCA0 port 0,1, and 2
-  switch (pos) {
-    case 0:
-      TCA_0(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_1(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_1(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_0(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_1(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_1(1); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 1:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_3(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_3(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_2(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(1); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 2:
-      TCA_4(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_5(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_5(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_4(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_5(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_5(1); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    default:
-      break;
+     Serial.println(pos);
+    //LOAD Waveform into TCA0 port 0
+    TCA_and_PORT(0,0);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,0); 
+    writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+    TCA_and_PORT(0,3);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,3); 
+    writeRegisterBytes  (0x02, 0x01); // GO bit to control reg.
+    TCA_and_PORT(0,4);
+    LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+    TCA_and_PORT(0,4);
+    writeRegisterBytes(0x02, 0x01);
+    TCA_OFF(0);
   }
 }
 
@@ -2568,67 +2522,11 @@ void WEBER_TACTILE_DISPLAY::PLAY_Y_proto(void) {
 
 void WEBER_TACTILE_DISPLAY::PLAY_Z_proto(void) {
   ////LOAD Waveform into TCA0 port 0,1, and 2
-  switch (pos) {
-    case 0:
-      TCA_0(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_0(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_1(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_1(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_0(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_0(2); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_1(1); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_1(2); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 1:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_2(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_3(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_3(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_2(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_2(2); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(1); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(2); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    case 2:
-      TCA_2(0); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_2(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      TCA_3(1); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
-      TCA_3(2); 
-      LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN)); 
-      //PLAY Stored Stored Waveform on same loaded DRVs
-      TCA_2(0); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_2(2); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(1); 
-      writeRegisterBytes(0x02, 0x01);
-      TCA_3(2); 
-      writeRegisterBytes(0x02, 0x01);
-      break;
-    default:
-      break;
-  }
+  TCA_and_PORT(0,0);
+  LOAD_WAVE(WaveForm_MAIN, sizeof(WaveForm_MAIN));
+  TCA_and_PORT(0,0); 
+  writeRegisterBytes(0x02, 0x01); // GO bit to control reg.
+  TCA_OFF(0);
 }
 
 
